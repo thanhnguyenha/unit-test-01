@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Unit Test Project
 
-## Getting Started
+Dự án Next.js với styled-components, tính năng đăng ký và đăng nhập sử dụng JSON Server.
 
-First, run the development server:
+## Cài đặt
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Chạy dự án
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Chạy JSON Server (Terminal 1)
+```bash
+npm run json-server
+```
+JSON Server sẽ chạy tại `http://localhost:3001`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. Chạy Next.js Dev Server (Terminal 2)
+```bash
+npm run dev
+```
+Ứng dụng sẽ chạy tại `http://localhost:3000`
 
-## Learn More
+## Tính năng
 
-To learn more about Next.js, take a look at the following resources:
+- ✅ Đăng ký tài khoản mới
+- ✅ Đăng nhập
+- ✅ Validation mật khẩu (tối thiểu 6 ký tự, có chữ hoa, chữ thường và số)
+- ✅ Xác nhận lại mật khẩu
+- ✅ Hiển thị/ẩn mật khẩu với icon con mắt
+- ✅ UI đẹp với styled-components
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Cấu trúc dự án
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/
+│   ├── api/
+│   │   ├── login/route.ts      # API endpoint đăng nhập
+│   │   └── register/route.ts   # API endpoint đăng ký
+│   ├── login/
+│   │   └── page.tsx            # Trang đăng nhập
+│   ├── register/
+│   │   └── page.tsx            # Trang đăng ký
+│   └── ...
+├── components/
+│   ├── LoginForm.tsx           # Component form đăng nhập
+│   └── RegisterForm.tsx        # Component form đăng ký
+└── ...
+db.json                          # Database JSON Server
+```
 
-## Deploy on Vercel
+## API Endpoints
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### POST /api/register
+Đăng ký tài khoản mới
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Request:**
+```json
+{
+  "username": "string",
+  "password": "string"
+}
+```
+
+**Response:**
+```json
+{
+  "message": "Đăng ký thành công",
+  "user": {
+    "id": 1,
+    "username": "string",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  }
+}
+```
+
+### POST /api/login
+Đăng nhập
+
+**Request:**
+```json
+{
+  "username": "string",
+  "password": "string"
+}
+```
+
+**Response:**
+```json
+{
+  "message": "Đăng nhập thành công",
+  "user": {
+    "id": 1,
+    "username": "string",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  }
+}
+```
+
+## Lưu ý
+
+- JSON Server phải chạy trước khi sử dụng tính năng đăng ký/đăng nhập
+- lệnh chạy server: npm run json-server
+- Dữ liệu được lưu trong file `db.json`
+- Password hiện tại được lưu dạng plain text (trong production nên hash password)

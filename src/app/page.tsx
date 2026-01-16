@@ -4,12 +4,20 @@ export default function Home() {
       <div className="flex flex-col items-center gap-4">
         <h1 className="text-2xl font-bold">Welcome to Next.js</h1>
         <p className="text-gray-600">Trang chủ của ứng dụng</p>
-        <a
-          href="/login"
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Đi đến trang đăng nhập
-        </a>
+        <div className="flex gap-4">
+          <a
+            href="/login"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Đăng nhập
+          </a>
+          <a
+            href="/register"
+            className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          >
+            Đăng ký
+          </a>
+        </div>
       </div>
     </div>
   );
