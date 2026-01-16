@@ -8,6 +8,30 @@ Dự án Next.js với styled-components, tính năng đăng ký và đăng nh�
 npm install
 ```
 
+## Cấu hình Environment Variables
+
+1. Copy file `.env.example` thành `.env.local`:
+```bash
+cp .env.example .env.local
+```
+
+Hoặc tạo file `.env.local` với nội dung:
+```env
+# API Configuration
+NEXT_PUBLIC_API_URL=http://localhost:3001
+
+# JSON Server URL (for server-side API routes)
+JSON_SERVER_URL=http://localhost:3001
+
+# App Configuration
+NEXT_PUBLIC_APP_NAME=Next.js Movie App
+```
+
+**Lưu ý:**
+- File `.env.local` đã được gitignore, không được commit lên repository
+- `NEXT_PUBLIC_*` variables có thể được truy cập từ client-side
+- Các biến không có prefix `NEXT_PUBLIC_` chỉ có thể truy cập từ server-side
+
 ## Chạy dự án
 
 ### 1. Chạy JSON Server (Terminal 1)
