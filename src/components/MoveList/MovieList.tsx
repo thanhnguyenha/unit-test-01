@@ -35,9 +35,10 @@ export const MovieList = ({ category }: MovieListProps) => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
 
-  // Fetch movies from API when category is 'cinema'
+  // Fetch movies/TV shows from API
   const fetchMovies = useCallback(async () => {
-    if (category !== 'cinema') {
+    // Only fetch for cinema and tv categories
+    if (category !== 'cinema' && category !== 'tv') {
       setMovies([]);
       setTotalPages(1);
       setTotalResults(0);
@@ -47,10 +48,21 @@ export const MovieList = ({ category }: MovieListProps) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await movieService.getListMovies({
-        keyword: searchTerm || undefined,
-        page: currentPage,
-      });
+      let response;
+      if (category === 'cinema') {
+        response = await movieService.getListMovies({
+          keyword: searchTerm || undefined,
+          page: currentPage,
+        });
+      } else if (category === 'tv') {
+        response = await movieService.getListTVShows({
+          keyword: searchTerm || undefined,
+          page: currentPage,
+        });
+      } else {
+        return;
+      }
+      
       setMovies(response.results);
       setTotalPages(response.total_pages);
       setTotalResults(response.total_results);
@@ -98,7 +110,7 @@ export const MovieList = ({ category }: MovieListProps) => {
     <Container id="movie-list">
       <Header>
         <Title>{getCategoryTitle()}</Title>
-        {category === 'cinema' && (
+        {(category === 'cinema' || category === 'tv') && (
           <SearchAndFilter>
             <SearchInput
               type="text"
@@ -114,7 +126,7 @@ export const MovieList = ({ category }: MovieListProps) => {
           </SearchAndFilter>
         )}
         <ResultsCount>
-          {category === 'cinema' 
+          {(category === 'cinema' || category === 'tv')
             ? `Tìm thấy ${totalResults} kết quả`
             : 'Chức năng đang phát triển'}
         </ResultsCount>
@@ -141,20 +153,20 @@ export const MovieList = ({ category }: MovieListProps) => {
                   {movie.poster_path ? (
                     <Image
                       src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                      alt={movie.title}
+                      alt={movie.title || movie.name || ''}
                       width={200}
                       height={280}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       unoptimized
                     />
                   ) : (
-                    movie.title.charAt(0)
+                    movie.title?.charAt(0) || movie.name?.charAt(0) || ''
                   )}
                 </MoviePoster>
                 <MovieInfo>
-                  <MovieTitle>{movie.title}</MovieTitle>
+                  <MovieTitle>{movie.title || movie.name || ''}</MovieTitle>
                   <MovieMeta>
-                    <span>{getYearFromDate(movie.release_date)}</span>
+                    <span>{getYearFromDate(movie.release_date || movie.first_air_date || '')}</span>
                     <Rating>⭐ {formatRating(movie.vote_average)}</Rating>
                   </MovieMeta>
                 </MovieInfo>
@@ -163,14 +175,14 @@ export const MovieList = ({ category }: MovieListProps) => {
           ) : (
             !loading && (
               <div style={{ gridColumn: '1 / -1', textAlign: 'center', color: '#b0b0b0', padding: '48px' }}>
-                {category === 'cinema' ? 'Không tìm thấy phim nào' : 'Chức năng đang phát triển'}
+                {(category === 'cinema' || category === 'tv') ? 'Không tìm thấy phim nào' : 'Chức năng đang phát triển'}
               </div>
             )
           )}
         </MovieGrid>
       )}
 
-      {!loading && !error && category === 'cinema' && totalPages > 1 && (
+      {!loading && !error && (category === 'cinema' || category === 'tv') && totalPages > 1 && (
         <Pagination>
           <PageButton
             $disabled={currentPage === 1}

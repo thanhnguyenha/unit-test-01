@@ -27,6 +27,25 @@ class MovieService {
          } });
       return response.data;
     }
+
+    async getListTVShows (params: {
+      keyword?: string;
+      page?: number;
+    }): Promise<{
+      results: MovieData[];
+      page: number;
+      total_pages: number;
+      total_results: number;
+    }> {
+      const response = await axiosInstance.get('/tv/popular',
+        { params: {
+          ...params,
+          language: 'vi-VN', // 'en-US'
+         } });
+      return response.data;
+    }
+
+
 }
 
 export const movieService = MovieService.getInstance();
