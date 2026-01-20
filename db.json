@@ -1,4 +1,18 @@
 {
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Task mẫu",
+      "content": "Nội dung task mẫu từ JSON Server",
+      "status": "open"
+    },
+    {
+      "id": "1df0",
+      "title": "quét nhà",
+      "content": "gfgf",
+      "status": "done"
+    }
+  ],
   "users": [
     {
       "id": "66fb",

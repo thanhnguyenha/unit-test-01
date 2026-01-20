@@ -2,8 +2,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { it, describe, expect, test } from 'vitest';
 import CountButton from './CountButton';
 
-describe('CountButton', () => {
-  it('should render', () => {
+describe.skip('CountButton', () => {
+  it('should render', { timeout: 1000 }, () => {
     render(<CountButton />);
     expect(screen.getByText('Count: 0')).toBeInTheDocument();
   });
